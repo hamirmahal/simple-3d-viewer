@@ -41,13 +41,7 @@ export default function LoadObject() {
               color: child.material,
               wireframe: false,
             });
-            const geo = new THREE.WireframeGeometry(child.geometry); // or WireframeGeometry
-            const mat = new THREE.LineBasicMaterial({
-              color: 0x000000,
-              linewidth: 4,
-            });
-            const mesh = new THREE.LineSegments(geo, mat);
-            scene.add(mesh);
+
             scene.add(child);
           }
         }
