@@ -18,7 +18,10 @@ export default function LoadObject() {
   const animal = useLoader(OBJLoader, animalPath);
   const cubeHalfTriangles = useLoader(OBJLoader, cubeHalfTrianglesPath);
   const bag = useLoader(OBJLoader, bagPath);
-  const object = bag;
+  const object = cube;
+  const geometry = new THREE.SphereGeometry(100, 100, 100);
+  const wireframe = new THREE.WireframeGeometry(geometry);
+  console.log(wireframe);
 
   useEffect(() => {
     let mounted = true;
@@ -37,23 +40,13 @@ export default function LoadObject() {
   }, [object]);
 
   useEffect(() => {
-    let mounted = true;
-    if (mounted && childMaterials && Object.keys(childMaterials).length > 0) {
-      object.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-          if (childMaterials[child.uuid]) {
-            child.material = new THREE.MeshPhongMaterial({
-              color: child.material,
-              wireframe: false
-            });
+    const line = new THREE.LineSegments(wireframe);
+    line.material.depthTest = false;
+    line.material.opacity = 0.25;
+    line.material.transparent = true;
 
-            scene.add(child);
-          }
-        }
-      });
-    }
+    scene.add(line);
+    let mounted = true;
     return () => {
       mounted = false;
     };
